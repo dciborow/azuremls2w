@@ -61,3 +61,13 @@ def getSQLTranform(moduleJson):
 dataframe.registerTempTable("t1")
 dataframe = spark.sqlContext.sql(\"\"\""""+query+"""\""")
     """)
+
+import json
+json_data = open('C:\Temp\MyExp.json')
+data = json.load(json_data)
+graph = data['Graph']
+
+nodes = graph['ModuleNodes']
+d = dict()
+for i in nodes:
+    d[i['Comment']] = i  
