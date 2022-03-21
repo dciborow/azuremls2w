@@ -6,22 +6,25 @@ def moduleType(moduleJson):
     }.get(moduleJson['ModuleId'])(moduleJson)
     
 def parseImportDataParameters(moduleParameters):
-    d = dict()
+    d = {}
     for i in moduleParameters:
         name = i.pop('Name')
         d[name] = i
     return d
 
 def docdbModule(moduleParameters):
-    docdbConfig = {'Endpoint': moduleParameters['Azure DocumentDB Server']['Value']}   
-    docdbConfig['Masterkey'] = 'InsertYourKeyHere'
-    docdbConfig['Database'] = moduleParameters['Database ID']['Value']
-    docdbConfig['preferredRegions'] = 'Central US'
-    docdbConfig['connectionMode'] = 'Gateway'
-    docdbConfig['Collection'] = moduleParameters['Collection ID']['Value']
-    docdbConfig['SamplingRatio'] = '1.0'
-    docdbConfig['schema_samplesize'] = '1000'
-    docdbConfig['query_custom'] = moduleParameters['SQL Query']['Value']    
+    docdbConfig = {
+        'Endpoint': moduleParameters['Azure DocumentDB Server']['Value'],
+        'Masterkey': 'InsertYourKeyHere',
+        'Database': moduleParameters['Database ID']['Value'],
+        'preferredRegions': 'Central US',
+        'connectionMode': 'Gateway',
+        'Collection': moduleParameters['Collection ID']['Value'],
+        'SamplingRatio': '1.0',
+        'schema_samplesize': '1000',
+        'query_custom': moduleParameters['SQL Query']['Value'],
+    }
+
     print("""
 # Connection
 config = """+json.dumps(docdbConfig, indent=4)+"""
@@ -68,6 +71,4 @@ data = json.load(json_data)
 graph = data['Graph']
 
 nodes = graph['ModuleNodes']
-d = dict()
-for i in nodes:
-    d[i['Comment']] = i  
+d = {i['Comment']: i for i in nodes}  
